@@ -22,9 +22,10 @@ import javax.persistence.Table;
 @Table(name="Producto")
 
 public class Producto implements Serializable {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private long id;
 	@Column (name="identificador")
 	private String identificador;
 	@Column(name="descripcion")
@@ -32,9 +33,9 @@ public class Producto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="idCompania")
 	private Compania compania;
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="EmpregadoTenda",joinColumns={@JoinColumn(name="idEmpregado")},inverseJoinColumns={@JoinColumn(name="idTenda")})
-	private Set <Tenda> tendas;
+	
+	@OneToMany(mappedBy = "producto")	
+	private Set <ProductoTenda> tendas;
 
 	
 	
@@ -44,11 +45,12 @@ public class Producto implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Producto(String identificador, String descripcion) {
+	public Producto(String identificador, String descripcion,Compania compania) {
 		super();
 		this.identificador = identificador;
 		this.descripcion = descripcion;
-		this.tendas=new HashSet<Tenda>();
+		this.tendas=new HashSet<ProductoTenda>();
+		this.compania=compania;
 	}
 	
 	public String getIdentificador() {
@@ -65,26 +67,40 @@ public class Producto implements Serializable {
 	}
 	
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
-	public Set<Tenda> getTendas() {
+	public Set<ProductoTenda> getTendas() {
 		return tendas;
 	}
 
-	public void setTendas(Set<Tenda> tendas) {
+	public void setTendas(Set<ProductoTenda> tendas) {
 		this.tendas = tendas;
 	}
 
-	public void addTenda(Tenda tenda){
+	public void addTenda(ProductoTenda tenda){
         this.tendas.add(tenda);
     }
 
+	public Compania getCompania() {
+		return compania;
+	}
 
+	public void setCompania(Compania compania) {
+		this.compania = compania;
+	}
+
+	//Metodo que pasa a JSON
+    public String toJSON(){
+        String json = new String();
+        json = json + "{ ";
+        json = json + "\"identificador\" : \"" + this.identificador +  " }";
+        return json;
+    }
 
 }

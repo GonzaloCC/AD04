@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name="Compania")
 public class Compania implements Serializable {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	//@GeneratedValue(strategy=GenerationType.AUTO)
 	private  int id;
 	@OneToMany(mappedBy = "compania",cascade=CascadeType.ALL)
 	private Set<Tenda> tendas ;
@@ -35,6 +35,7 @@ public class Compania implements Serializable {
 	private Set<EmpregadoTenda> empregadotenda;
 	
 	public Compania() {
+		id=1;
 		this.tendas = new HashSet<Tenda>();
 		this.clientes = new HashSet<Cliente>();
 		this.productos = new HashSet<Producto>();

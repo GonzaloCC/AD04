@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class Empregado implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private long id;
 	@Column(name="nome")
 	private String nome;
 	@Column(name="apelido1")
@@ -34,9 +34,8 @@ public class Empregado implements Serializable {
 	@JoinColumn(name="idCompania")
 	private Compania compania;
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="EmpregadoTenda",joinColumns={@JoinColumn(name="idEmpregado")},inverseJoinColumns={@JoinColumn(name="idTenda")})
-	private Set <Tenda> tendas;
+	@OneToMany(mappedBy="empregado")
+	private Set <EmpregadoTenda> tendas;
 	
 	
 
@@ -44,12 +43,13 @@ public class Empregado implements Serializable {
 		super();
 		
 	}
-	public Empregado(String nome, String apelido1, String apelido2) {
+	public Empregado(String nome, String apelido1, String apelido2,Compania compania) {
 		super();
 		this.nome = nome;
 		this.apelido1 = apelido1;
 		this.apelido2 = apelido2;
-		this.tendas = new HashSet<Tenda>();
+		this.tendas = new HashSet<EmpregadoTenda>();
+		this.compania=compania;
 	}
 	public String getNome() {
 		return nome;
@@ -72,15 +72,16 @@ public class Empregado implements Serializable {
 		this.apelido2 = apelido2;
 	}
 	
-	public void addTenda(Tenda tenda){
+	public void addTenda(EmpregadoTenda tenda){
 	        this.tendas.add(tenda);
 	    }
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
+
 
 	
 }

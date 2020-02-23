@@ -3,6 +3,7 @@ package AD.AD04;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,17 +17,22 @@ import javax.persistence.Table;
 @Table(name="EmpregadoTenda")
 public class EmpregadoTenda implements Serializable {
 	
-    @EmbeddedId
-    private EmpregadoTendaID id = new EmpregadoTendaID();
-	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @ManyToOne
-    @MapsId("idEmpregado")
+    @JoinColumn(name = "idEmpregado", referencedColumnName = "id")
     private Empregado empregado;
- 
+    
+    @Id
     @ManyToOne
-    @MapsId("idTenda")
+    @JoinColumn(name = "idTenda", referencedColumnName = "id")
     private Tenda tenda;
 
+    @Column(name="horas")
     private int horas ;
     
 	@ManyToOne
@@ -41,30 +47,15 @@ public class EmpregadoTenda implements Serializable {
 	}
 
 
-	
-
-	
 
 
-
-	public EmpregadoTendaID getId() {
-		return id;
+	public EmpregadoTenda(Empregado empregado, Tenda tenda, int horas,Compania compania) {
+		super();
+		this.empregado = empregado;
+		this.tenda = tenda;
+		this.horas = horas;
+		this.compania=compania;
 	}
-
-
-
-
-
-
-
-
-	public void setId(EmpregadoTendaID id) {
-		this.id = id;
-	}
-
-
-
-
 
 
 

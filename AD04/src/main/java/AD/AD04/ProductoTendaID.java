@@ -9,8 +9,9 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ProductoTendaID implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+    @Column(name = "idProducto")
     private Long idProducto;
+    @Column(name = "idTenda")
     private Long idTenda;
 
     public ProductoTendaID() {
@@ -20,9 +21,9 @@ public class ProductoTendaID implements Serializable{
     
 
    
-    public ProductoTendaID(Long idEmpregado, Long idTenda) {
+    public ProductoTendaID(Long idProducto, Long idTenda) {
 		super();
-		this.idProducto = idEmpregado;
+		this.idProducto = idProducto;
 		this.idTenda = idTenda;
 	}
 

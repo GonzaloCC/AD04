@@ -25,7 +25,7 @@ import javax.persistence.Table;
 public class Tenda implements Serializable  {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private long id;
 	@Column(name="nome")
 	private String nome;
 	@Column(name="cidade")
@@ -38,21 +38,21 @@ public class Tenda implements Serializable  {
 	@JoinColumn(name="idProvincia")
 	private Provincia provincia;
 
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="ProductoTenda",joinColumns={@JoinColumn(name="idTenda")},inverseJoinColumns={@JoinColumn(name="idProducto")})
-	private Set <Producto> productos;
+	@OneToMany(mappedBy="tenda")
+	private Set <ProductoTenda> productos;
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
-	@JoinTable(name="EmpregadoTenda",joinColumns={@JoinColumn(name="idTenda")},inverseJoinColumns={@JoinColumn(name="idEmpregado")})
-	private Set <Empregado> empregados;
 	
-	public Tenda(String nome, String cidade,Provincia provincia) {
+	@OneToMany(mappedBy="tenda")
+	private Set <EmpregadoTenda> empregados;
+	
+	public Tenda(String nome, String cidade,Provincia provincia,Compania compania) {
 		super();
 		this.nome = nome;
 		this.cidade = cidade;
 		this.provincia=provincia;
-		this.productos = new HashSet<Producto>();
-		this.empregados = new HashSet<Empregado>();
+		this.productos = new HashSet<ProductoTenda>();
+		this.empregados = new HashSet<EmpregadoTenda>();
+		this.compania=compania;
 	}
 
 
@@ -64,13 +64,13 @@ public class Tenda implements Serializable  {
 	
 	
 	
-	 public int getId() {
+	 public long getId() {
 		return id;
 	}
 
 
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -124,40 +124,46 @@ public class Tenda implements Serializable  {
 
 
 
-	public Set<Producto> getProductos() {
+	public Set<ProductoTenda> getProductos() {
 		return productos;
 	}
 
 
 
-	public void setProductos(Set<Producto> productos) {
+	public void setProductos(Set<ProductoTenda> productos) {
 		this.productos = productos;
 	}
 
 
 
-	public Set<Empregado> getEmpregados() {
+	public Set<EmpregadoTenda> getEmpregados() {
 		return empregados;
 	}
 
 
 
-	public void setEmpregados(Set<Empregado> empregados) {
+	public void setEmpregados(Set<EmpregadoTenda> empregados) {
 		this.empregados = empregados;
 	}
 
 
 
-	public void addEmpregado(Empregado empregado){
+	public void addEmpregado(EmpregadoTenda empregado){
 	        this.empregados.add(empregado);
 	    }
 	
-	public void addProducto(Producto producto){
+	public void addProducto(ProductoTenda producto){
         this.productos.add(producto);
     }
 
 
-
+    //Metodo que pasa a JSON
+    public String toJSON(){
+        String json = new String();
+        json = json + "{ ";
+        json = json + "\"nome\" : " + this.nome + " }";
+        return json;
+    }
 
 
 
